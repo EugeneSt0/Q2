@@ -21,7 +21,6 @@
       margin-bottom: 20px;
       font-weight: 600;
     }
-    
     /* ======== Блок управления ======== */
     .controls {
       margin-bottom: 30px;
@@ -47,7 +46,6 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    
     /* ======== Кнопки ======== */
     button {
       padding: 8px 16px;
@@ -77,7 +75,6 @@
       background-color: #e0e0e0;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    
     /* ======== Вывод расписания ======== */
     .schedule-date {
       margin-bottom: 20px;
@@ -121,13 +118,12 @@
     <div class="controls">
       <!-- Строка 1: выбор тайм-зоны -->
       <div class="control-row">
-        <label for="timezone">Выберите часовой пояс:</label>
+        <label for="timezone">Выберите часовой пояса:</label>
         <select id="timezone">
           <option value="GMT+3" selected>GMT+3 (Москва, Стамбул, Эр-Рияд, Доха)</option>
           <option value="GMT+2">GMT+2 (Лимассол, Иерусалим, Каир, Коста-Рика)</option>
         </select>
       </div>
-      
       <!-- Строка 2: выбор пользователя + кнопка -->
       <div class="control-row">
         <label for="personInput">Выберите себя:</label>
@@ -172,7 +168,6 @@
         </datalist>
         <button id="filterButton">Показать своё расписание</button>
       </div>
-      
       <!-- Строка 3: кнопка для общего расписания -->
       <div class="control-row">
         <button id="showAllButton">Показать общее расписание</button>
@@ -181,8 +176,10 @@
     
     <div id="scheduleContainer"></div>
   </div>
-
+  
+  <!-- Оборачиваем весь JS в IIFE чтобы избежать повторных деклараций -->
   <script>
+  (function(){
     /********* ДАННЫЕ РАСПИСАНИЯ **********/
     const schedule = [
       { id: 1, team: "Front-end", name: "Андрей Андреев", date: "26.03.2025", start: "11:00", end: "11:20", dev: "Максим Балдин", devPlus: "Павел Лиспад", pm: "Максим Балдин" },
@@ -221,7 +218,7 @@
       { id: 35, team: "Product", name: "Женя Степанов", date: "27.03.2025", start: "13:40", end: "14:00", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" }
     ];
     
-    /********* Глобальные переменные для текущего режима **********/
+    /********* Глобальные переменные для режима и пользователя **********/
     let currentView = "all"; // "all" или "user"
     let currentUser = "";
     
@@ -256,7 +253,7 @@
       }
     }
     
-    /********* Форматирование строк для расписания **********/
+    /********* Форматирование строк расписания **********/
     function formatMeetingForUser(meeting, user, selectedTZ) {
       const start = convertTime(meeting.start, "GMT+3", selectedTZ);
       const end = convertTime(meeting.end, "GMT+3", selectedTZ);
@@ -269,8 +266,6 @@
       const userRoles = [];
       if (isName) userRoles.push("Участник встречи (тет-а-тет/перформанс)");
       if (isDev)  userRoles.push("Лид");
-    
-      // Приоритет: если одновременно devPlus и pm => ПМ
       if (isPM && isDevPlus) {
         userRoles.push("ПМ");
       } else {
@@ -326,7 +321,7 @@
     }
     
     /********* Рендер расписания **********/
-    // При рендере мы добавляем data-атрибуты для team и id, чтобы потом можно было применять состояние чекбоксов
+    // При рендере добавляем data-атрибуты для id и team, чтобы потом применять состояние галочек
     function renderMeetings(container, meetings, formatter, selectedTZ) {
       container.innerHTML = "";
       const grouped = {};
@@ -346,7 +341,6 @@
     
         grouped[date].forEach(meeting => {
           const li = document.createElement("li");
-          // Сохраним данные в li
           li.setAttribute("data-id", meeting.id);
           li.setAttribute("data-team", meeting.team);
     
@@ -354,7 +348,7 @@
             <input type="checkbox" id="meeting-${meeting.id}" onchange="toggleMeeting('${meeting.id}')">
             <label for="meeting-${meeting.id}">${formatter(meeting, selectedTZ)}</label>
           `;
-          // Устанавливаем фон в зависимости от команды
+          // Устанавливаем фон по команде
           li.style.backgroundColor = getTeamColor(meeting.team);
     
           ul.appendChild(li);
@@ -368,29 +362,24 @@
     /********* Глобальное состояние чекбоксов из Firestore **********/
     const meetingsState = {}; // key: meetingId, value: { checked: true/false }
     
-    // Функция, которая проходит по всем чекбоксам и устанавливает их состояние из meetingsState
+    // Применяем состояние чекбоксов к текущим элементам DOM
     function applyCheckStates() {
       const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="meeting-"]');
       checkboxes.forEach(checkbox => {
-        // Извлекаем meetingId из id="meeting-<id>"
         const meetingId = checkbox.id.replace("meeting-", "");
         if (meetingsState[meetingId] !== undefined) {
           checkbox.checked = meetingsState[meetingId].checked;
-          // Находим родительский li и меняем фон:
           const li = checkbox.closest("li");
           if (li) {
             li.style.backgroundColor = meetingsState[meetingId].checked
-              ? "#90EE90"  // мягкий зелёный для завершённых
+              ? "#90EE90"
               : getTeamColor(li.getAttribute("data-team"));
           }
         }
       });
     }
     
-    /********* Функция для показа расписания **********/
-    let currentView = "all"; // "all" или "user"
-    let currentUser = "";
-    
+    /********* Функции показа расписания **********/
     function showAllSchedule() {
       currentView = "all";
       currentUser = "";
@@ -413,13 +402,11 @@
       const person = document.getElementById("personInput").value.trim();
       currentUser = person;
       const container = document.getElementById("scheduleContainer");
-    
       container.innerHTML = "";
       if (!person) {
         container.innerHTML = "<p>Введите имя пользователя.</p>";
         return;
       }
-    
       const filtered = schedule.filter(meeting => {
         const roles = [meeting.name, meeting.dev, meeting.devPlus, meeting.pm];
         return roles.some(role => role && role.toLowerCase() === person.toLowerCase());
@@ -428,7 +415,6 @@
         container.innerHTML = "<p>Нет записей для выбранного пользователя.</p>";
         return;
       }
-    
       renderMeetings(
         container,
         filtered,
@@ -441,8 +427,6 @@
     /********* Обработчики событий **********/
     document.getElementById("filterButton").addEventListener("click", showUserSchedule);
     document.getElementById("showAllButton").addEventListener("click", showAllSchedule);
-    
-    // При изменении тайм-зоны перерисовываем текущее расписание
     document.getElementById("timezone").addEventListener("change", () => {
       if (currentView === "user" && currentUser.trim() !== "") {
         showUserSchedule();
@@ -452,9 +436,7 @@
     });
     
     /********* Firebase **********/
-    // Подключаем Firebase через compat-версии
-    // Скрипты Firebase уже подключены внизу страницы
-    // Конфигурация Firebase
+    // Инициализация Firebase через compat-версии
     const firebaseConfig = {
       apiKey: "AIzaSyDx8b0ZrMgg2vvAKx1bJ6p-6SJxXcBynCs",
       authDomain: "q2-2025.firebaseapp.com",
@@ -463,8 +445,6 @@
       messagingSenderId: "460598346113",
       appId: "1:460598346113:web:d34a58c67d8f0df419a880"
     };
-    
-    // Инициализируем Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
@@ -472,7 +452,6 @@
     function toggleMeeting(meetingId) {
       console.log("toggleMeeting called with ID =", meetingId);
       const meetingRef = db.collection("meetings").doc(meetingId);
-    
       meetingRef.get().then((doc) => {
         if (doc.exists) {
           const newVal = !doc.data().checked;
@@ -492,10 +471,8 @@
       db.collection("meetings").onSnapshot((snapshot) => {
         snapshot.forEach((doc) => {
           console.log("Got doc from Firestore:", doc.id, doc.data());
-          // Обновляем глобальное состояние
           meetingsState[doc.id] = { checked: !!doc.data().checked };
         });
-        // Применяем обновлённые состояния ко всем чекбоксам
         applyCheckStates();
       }, (err) => {
         console.error("onSnapshot error:", err);
@@ -507,7 +484,10 @@
       showAllSchedule();
       loadMeetings();
     });
+    
+  })();
   </script>
+  
   <!-- Подключаем Firebase SDK (compat версии) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
