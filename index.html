@@ -412,29 +412,42 @@
 
 <!-- Код работы с Firestore -->
 <script>
-  function toggleMeeting(meetingId) {
-    const meetingRef = db.collection("meetings").doc(meetingId);
+function toggleMeeting(meetingId) {
+  console.log("toggleMeeting called with ID =", meetingId);
 
-    meetingRef.get().then((doc) => {
-      if (doc.exists) {
-        meetingRef.update({ checked: !doc.data().checked });
-      } else {
-        meetingRef.set({ checked: true });
-      }
-    });
-  }
+  const meetingRef = db.collection("meetings").doc(meetingId);
+
+  meetingRef.get().then((doc) => {
+    if (doc.exists) {
+      const newVal = !doc.data().checked;
+      console.log("Doc already exists, toggling from", doc.data().checked, "to", newVal);
+      meetingRef.update({ checked: newVal });
+    } else {
+      console.log("Doc does NOT exist, creating new doc with checked=true");
+      meetingRef.set({ checked: true });
+    }
+  }).catch((err) => {
+    console.error("Error in toggleMeeting:", err);
+  });
+}
 
   function loadMeetings() {
-    db.collection("meetings").onSnapshot((snapshot) => {
-      snapshot.forEach((doc) => {
-        const el = document.getElementById(`meeting-${doc.id}`);
-        if (el) {
-          el.checked = doc.data().checked;
-          el.parentElement.style.backgroundColor = doc.data().checked ? "#90EE90" : "";
-        }
-      });
+  console.log("loadMeetings: subscribing to meetings collection...");
+  db.collection("meetings").onSnapshot((snapshot) => {
+    snapshot.forEach((doc) => {
+      console.log("Got doc from Firestore:", doc.id, doc.data());
+
+      const el = document.getElementById(`meeting-${doc.id}`);
+      if (el) {
+        el.checked = doc.data().checked;
+        el.parentElement.style.backgroundColor = doc.data().checked ? "#90EE90" : getTeamColor(/* нужно team, но у нас нет, ладно */ "");
+      }
     });
-  }
+  }, (err) => {
+    console.error("onSnapshot error:", err);
+  });
+}
+
 
   document.addEventListener("DOMContentLoaded", () => {
     loadMeetings();
