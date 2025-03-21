@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Расписание встреч перфомансы + тет-а-теты Q1 2025</title>
+  <style>
+    /* ======== Общий фон и базовые стили ======== */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ece9e6, #ffffff); /* Лёгкий градиент */
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* ======== Блок управления ======== */
+    .controls {
+      margin-bottom: 30px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .control-row {
+      margin-bottom: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    label {
+      font-weight: 500;
+      margin-right: 5px;
+    }
+    select, input {
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* ======== Кнопки ======== */
+    button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      border: 1px solid #ccc;
+    }
+    /* Кнопка "Показать своё расписание" - синий */
+    #filterButton {
+      background-color: #4a90e2; 
+      color: #fff;
+      border-color: #3b7bc0;
+    }
+    #filterButton:hover {
+      background-color: #3b7bc0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    /* Кнопка "Показать общее расписание" - серая */
+    #showAllButton {
+      background-color: #f0f0f0;
+      color: #333;
+      border-color: #ccc;
+    }
+    #showAllButton:hover {
+      background-color: #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* ======== Вывод расписания ======== */
+    .schedule-date {
+      margin-bottom: 20px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .schedule-date h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #444;
+      font-weight: 600;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    li {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      /* По умолчанию фон будет белый, но мы заменим его цветом в зависимости от команды */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Расписание встреч перфомансы + тет-а-теты Q1 2025</h1>
+    
+    <div class="controls">
+      <!-- Строка 1: выбор часового пояса -->
+      <div class="control-row">
+        <label for="timezone">Выберите часовой пояс:</label>
+        <select id="timezone">
+          <option value="GMT+3" selected>GMT+3 (Москва, Стамбул, Эр-Рияд, Доха)</option>
+          <option value="GMT+2">GMT+2 (Лимассол, Иерусалим, Каир, Коста-Рика)</option>
+        </select>
+      </div>
+      
+      <!-- Строка 2: выбор пользователя + кнопка -->
+      <div class="control-row">
+        <label for="personInput">Выберите себя:</label>
+        <input type="text" id="personInput" list="persons" placeholder="Введите имя">
+        <datalist id="persons">
+          <option value="Андрей Андреев">
+          <option value="Максим Балдин">
+          <option value="Александр Большаков">
+          <option value="Сергей Пофалитов">
+          <option value="Дарья Свечкина">
+          <option value="Артем Шерепа">
+          <option value="Александр Шварцберг">
+          <option value="Павел Лиспад">
+          <option value="Александр Щеглов">
+          <option value="Дмитрий Барсуков">
+          <option value="Антон Башев">
+          <option value="Антон Андерсен">
+          <option value="Павел Бунаев">
+          <option value="Эдуард Попов">
+          <option value="Владислав Вилежанинов">
+          <option value="Сергей Гоголев">
+          <option value="Владимир Королев">
+          <option value="Владимир Буянов">
+          <option value="Андрей Потапов">
+          <option value="Михаил Петров">
+          <option value="Илья Князев">
+          <option value="Александр Борисов">
+          <option value="Владимир Щеглов">
+          <option value="Оксана Марачук">
+          <option value="Никита Исаев">
+          <option value="Алексей Стафеев">
+          <option value="Вячеслав Щукин">
+          <option value="Юлия Масленникова">
+          <option value="Семен Евсеев">
+          <option value="Айрат Сулейманов">
+          <option value="Даня Гаврильчик">
+          <option value="Павел Кононов">
+          <option value="Дмитрий Павлов">
+          <option value="Витя Климов">
+          <option value="Саша Зайченко">
+          <option value="Женя Степанов">
+        </datalist>
+        <button id="filterButton">Показать своё расписание</button>
+      </div>
+      
+      <!-- Строка 3: кнопка для общего расписания -->
+      <div class="control-row">
+        <button id="showAllButton">Показать общее расписание</button>
+      </div>
+    </div>
+    
+    <div id="scheduleContainer"></div>
+  </div>
+
+  <script>
+    const schedule = [
+    { id: 1, team: "Front-end", name: "Андрей Андреев", date: "26.03.2025", start: "11:00", end: "11:20", dev: "Максим Балдин", devPlus: "Павел Лиспад", pm: "Максим Балдин" },
+      { id: 2, team: "Front-end", name: "Александр Большаков", date: "26.03.2025", start: "11:20", end: "11:40", dev: "Андрей Андреев", pm: "Дима Павлов", devPlus: "" },
+      { id: 3, team: "Front-end", name: "Сергей Пофалитов", date: "26.03.2025", start: "11:40", end: "12:00", dev: "Андрей Андреев", pm: "Дима Павлов", devPlus: "" },
+      { id: 4, team: "RNA", name: "Дарья Свечкина", date: "26.03.2025", start: "10:00", end: "10:20", dev: "Павел Лиспад", pm: "Дима Павлов", devPlus: "" },
+      { id: 5, team: "RNA", name: "Артем Шерепа", date: "26.03.2025", start: "10:20", end: "10:40", dev: "Павел Лиспад", pm: "Дима Павлов", devPlus: "" },
+      { id: 6, team: "RNA", name: "Александр Шварцберг", date: "26.03.2025", start: "10:40", end: "11:00", dev: "Павел Лиспад", pm: "Дима Павлов", devPlus: "" },
+      { id: 7, team: "Golang", name: "Павел Лиспад", date: "26.03.2025", start: "11:20", end: "11:40", dev: "Максим Балдин", pm: "Максим Балдин", devPlus: "" },
+      { id: 8, team: "Golang", name: "Александр Щеглов", date: "26.03.2025", start: "14:00", end: "14:20", dev: "Павел Лиспад", pm: "Даня Гаврильчик", devPlus: "" },
+      { id: 9, team: "Golang", name: "Дмитрий Барсуков", date: "26.03.2025", start: "14:20", end: "14:40", dev: "Павел Лиспад", pm: "Даня Гаврильчик", devPlus: "" },
+      { id: 10, team: "Golang", name: "Антон Башев", date: "26.03.2025", start: "14:40", end: "15:00", dev: "Павел Лиспад", pm: "Даня Гаврильчик", devPlus: "" },
+      { id: 11, team: "Golang", name: "Антон Андерсен", date: "26.03.2025", start: "15:00", end: "15:20", dev: "Павел Лиспад", pm: "Даня Гаврильчик", devPlus: "" },
+      { id: 12, team: "PHP", name: "Павел Бунаев", date: "26.03.2025", start: "11:40", end: "12:00", dev: "Максим Балдин", devPlus: "Павел Лиспад", pm: "Максим Балдин" },
+      { id: 13, team: "PHP", name: "Эдуард Попов", date: "26.03.2025", start: "13:40", end: "14:00", dev: "Павел Бунаев", pm: "Витя Климов", devPlus: "" },
+      { id: 14, team: "PHP", name: "Владислав Вилежанинов", date: "26.03.2025", start: "14:00", end: "14:20", dev: "Павел Бунаев", pm: "Витя Климов", devPlus: "" },
+      { id: 15, team: "PHP", name: "Сергей Гоголев", date: "26.03.2025", start: "14:20", end: "14:40", dev: "Павел Бунаев", pm: "Витя Климов", devPlus: "" },
+      { id: 16, team: "PHP", name: "Владимир Королев", date: "26.03.2025", start: "14:40", end: "15:00", dev: "Павел Бунаев", pm: "Витя Климов", devPlus: "" },
+      { id: 17, team: "DevOps", name: "Владимир Буянов", date: "26.03.2025", start: "13:00", end: "13:20", dev: "Максим Балдин", devPlus: "Павел Лиспад", pm: "Максим Балдин" },
+      { id: 18, team: "DevOps", name: "Андрей Потапов", date: "26.03.2025", start: "10:20", end: "10:40", dev: "Владимир Буянов", pm: "Паша Кононов", devPlus: "" },
+      { id: 19, team: "DevOps", name: "Михаил Петров", date: "26.03.2025", start: "10:40", end: "11:00", dev: "Владимир Буянов", pm: "Паша Кононов", devPlus: "" },
+      { id: 20, team: "DevOps", name: "Илья Князев", date: "26.03.2025", start: "11:00", end: "11:20", dev: "Владимир Буянов", pm: "Паша Кононов", devPlus: "" },
+      { id: 22, team: "DevOps", name: "Александр Борисов", date: "26.03.2025", start: "11:20", end: "11:40", dev: "Владимир Буянов", pm: "Паша Кононов", devPlus: "" },
+      { id: 23, team: "QA", name: "Владимир Щеглов", date: "26.03.2025", start: "13:20", end: "13:40", dev: "Максим Балдин", devPlus: "Павел Лиспад", pm: "Максим Балдин" },
+      { id: 24, team: "QA", name: "Оксана Марачук", date: "26.03.2025", start: "13:40", end: "14:00", dev: "Владимир Щеглов", pm: "Женя Степанов", devPlus: "" },
+      { id: 25, team: "QA", name: "Никита Исаев", date: "26.03.2025", start: "14:00", end: "14:20", dev: "Владимир Щеглов", pm: "Женя Степанов", devPlus: "" },
+      { id: 26, team: "QA", name: "Алексей Стафеев", date: "26.03.2025", start: "14:20", end: "14:40", dev: "Владимир Щеглов", pm: "Женя Степанов", devPlus: "" },
+      { id: 27, team: "QA", name: "Вячеслав Щукин", date: "26.03.2025", start: "14:40", end: "15:00", dev: "Владимир Щеглов", pm: "Женя Степанов", devPlus: "" },
+      { id: 28, team: "QA", name: "Юлия Масленникова", date: "26.03.2025", start: "15:00", end: "15:20", dev: "Владимир Щеглов", pm: "Женя Степанов", devPlus: "" },
+      { id: 29, team: "QA", name: "Айрат Сулейманов", date: "26.03.2025", start: "15:40", end: "16:00", dev: "Владимир Щеглов", pm: "Женя Степанов", devPlus: "" },
+      { id: 30, team: "Product", name: "Даня Гаврильчик", date: "27.03.2025", start: "11:00", end: "11:20", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" },
+      { id: 31, team: "Product", name: "Павел Кононов", date: "27.03.2025", start: "11:20", end: "11:40", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" },
+      { id: 32, team: "Product", name: "Дмитрий Павлов", date: "27.03.2025", start: "11:40", end: "12:00", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" },
+      { id: 34, team: "Product", name: "Витя Климов", date: "27.03.2025", start: "13:00", end: "13:20", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" },
+      { id: 33, team: "Product", name: "Саша Зайченко", date: "27.03.2025", start: "13:20", end: "13:40", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" },
+      { id: 35, team: "Product", name: "Женя Степанов", date: "27.03.2025", start: "13:40", end: "14:00", dev: "Максим Балдин", pm: "Женя Степанов", devPlus: "" }
+    ];
+
+    function parseTimeToMinutes(timeStr) {
+      const [h, m] = timeStr.split(":").map(Number);
+      return h * 60 + m;
+    }
+    function pad(num) {
+      return num.toString().padStart(2, "0");
+    }
+    function convertTime(timeStr, fromTZ, toTZ) {
+      let [hours, minutes] = timeStr.split(":").map(Number);
+      if (fromTZ === "GMT+3" && toTZ === "GMT+2") {
+        hours -= 1;
+        if (hours < 0) hours += 24;
+      }
+      return pad(hours) + ":" + pad(minutes);
+    }
+
+    // Функция выбора цвета в зависимости от команды
+    function getTeamColor(team) {
+      switch (team.toLowerCase()) {
+        case "front-end": return "#d3e5ff";  // нежно-голубой
+        case "rna":       return "#fff9c4";  // нежно-жёлтый
+        case "golang":    return "#f3e5f5";  // нежно-фиолетовый
+        case "devops":    return "#c8e6c9";  // нежно-зелёный
+        case "qa":        return "#ffe0e0";  // нежно-розовый
+        case "php":       return "#e1f5fe";  // нежно-синий
+        case "product":   return "#ffe0b2";  // нежно-персиковый
+        default:          return "#fafafa";  // по умолчанию
+      }
+    }
+
+    function formatMeetingForUser(meeting, user, selectedTZ) {
+      const start = convertTime(meeting.start, "GMT+3", selectedTZ);
+      const end = convertTime(meeting.end, "GMT+3", selectedTZ);
+
+      const isName    = (meeting.name.toLowerCase() === user.toLowerCase());
+      const isDev     = (meeting.dev && meeting.dev.trim() !== "" && meeting.dev.toLowerCase() === user.toLowerCase());
+      const isDevPlus = (meeting.devPlus && meeting.devPlus.trim() !== "" && meeting.devPlus.toLowerCase() === user.toLowerCase());
+      const isPM      = (meeting.pm && meeting.pm.trim() !== "" && meeting.pm.toLowerCase() === user.toLowerCase());
+
+      const userRoles = [];
+      if (isName) userRoles.push("Участник встречи (тет-а-тет/перформанс)");
+      if (isDev)  userRoles.push("Лид");
+
+      // Приоритет: если человек и devPlus, и pm => ПМ
+      if (isPM && isDevPlus) {
+        userRoles.push("ПМ");
+      } else {
+        if (isDevPlus) userRoles.push("Вспомогающий");
+        if (isPM)      userRoles.push("ПМ");
+      }
+
+      const otherRoles = [];
+      if (meeting.dev && meeting.dev.toLowerCase() !== user.toLowerCase()) {
+        otherRoles.push("Лид: " + meeting.dev);
+      }
+      if (meeting.devPlus && meeting.devPlus.toLowerCase() !== user.toLowerCase()) {
+        otherRoles.push("Вспомогающий: " + meeting.devPlus);
+      }
+      if (meeting.pm && meeting.pm.toLowerCase() !== user.toLowerCase()) {
+        otherRoles.push("ПМ: " + meeting.pm);
+      }
+
+      let rolesText = "";
+      if (userRoles.length > 0) {
+        rolesText = "Твоя роль: " + userRoles.join(", ");
+      }
+      if (otherRoles.length > 0) {
+        rolesText = rolesText
+          ? rolesText + ", " + otherRoles.join(", ")
+          : otherRoles.join(", ");
+      }
+
+      return `${start} - ${end} ${meeting.name} (${meeting.team})${rolesText ? " - " + rolesText : ""}`;
+    }
+
+    function formatMeetingForAll(meeting, selectedTZ) {
+      const start = convertTime(meeting.start, "GMT+3", selectedTZ);
+      const end = convertTime(meeting.end, "GMT+3", selectedTZ);
+
+      const roles = [];
+      if (meeting.dev && meeting.dev.trim() !== "") {
+        roles.push("Лид: " + meeting.dev);
+      }
+      if (meeting.devPlus && meeting.devPlus.trim() !== "") {
+        roles.push("Вспомогающий: " + meeting.devPlus);
+      }
+      if (meeting.pm && meeting.pm.trim() !== "") {
+        roles.push("ПМ: " + meeting.pm);
+      }
+
+      const rolesText = roles.length ? "Роли: " + roles.join(", ") : "";
+      return `${start} - ${end} ${meeting.name} (${meeting.team})${rolesText ? " - " + rolesText : ""}`;
+    }
+
+    function sortMeetingsByTime(meetings) {
+      meetings.sort((a, b) => parseTimeToMinutes(a.start) - parseTimeToMinutes(b.start));
+    }
+
+    function renderMeetings(container, meetings, formatter, selectedTZ) {
+      container.innerHTML = "";
+      const grouped = {};
+      meetings.forEach(m => {
+        if (!grouped[m.date]) grouped[m.date] = [];
+        grouped[m.date].push(m);
+      });
+      for (let date in grouped) {
+        sortMeetingsByTime(grouped[date]);
+      }
+
+      for (let date in grouped) {
+        const dateDiv = document.createElement("div");
+        dateDiv.className = "schedule-date";
+        dateDiv.innerHTML = `<h2>${date}</h2>`;
+        const ul = document.createElement("ul");
+
+        grouped[date].forEach(meeting => {
+          const li = document.createElement("li");
+          li.textContent = formatter(meeting, selectedTZ);
+
+          // Раскраска li по цвету команды
+          li.style.backgroundColor = getTeamColor(meeting.team);
+
+          ul.appendChild(li);
+        });
+
+        dateDiv.appendChild(ul);
+        container.appendChild(dateDiv);
+      }
+    }
+
+    function showUserSchedule() {
+      const selectedTZ = document.getElementById("timezone").value;
+      const person = document.getElementById("personInput").value.trim();
+      const container = document.getElementById("scheduleContainer");
+
+      container.innerHTML = "";
+      if (!person) {
+        container.innerHTML = "<p>Введите имя пользователя.</p>";
+        return;
+      }
+
+      const filtered = schedule.filter(meeting => {
+        const roles = [meeting.name, meeting.dev, meeting.devPlus, meeting.pm];
+        return roles.some(role => role && role.toLowerCase() === person.toLowerCase());
+      });
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>Нет записей для выбранного пользователя.</p>";
+        return;
+      }
+
+      renderMeetings(
+        container,
+        filtered,
+        (meeting, tz) => formatMeetingForUser(meeting, person, tz),
+        selectedTZ
+      );
+    }
+
+    function showAllSchedule() {
+      const selectedTZ = document.getElementById("timezone").value;
+      const container = document.getElementById("scheduleContainer");
+      container.innerHTML = "";
+
+      renderMeetings(
+        container,
+        schedule,
+        (meeting, tz) => formatMeetingForAll(meeting, tz),
+        selectedTZ
+      );
+    }
+
+    document.getElementById("filterButton").addEventListener("click", showUserSchedule);
+    document.getElementById("showAllButton").addEventListener("click", showAllSchedule);
+  </script>
+</body>
+</html>
