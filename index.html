@@ -387,5 +387,25 @@
     document.getElementById("filterButton").addEventListener("click", showUserSchedule);
     document.getElementById("showAllButton").addEventListener("click", showAllSchedule);
   </script>
+  <!-- Подключаем Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+<script>
+  // Конфигурация Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDx8b0ZrMgg2vvAKx1bJ6p-6SJxXcBynCs",
+    authDomain: "q2-2025.firebaseapp.com",
+    projectId: "q2-2025",
+    storageBucket: "q2-2025.firebasestorage.app",
+    messagingSenderId: "460598346113",
+    appId: "1:460598346113:web:d34a58c67d8f0df419a880"
+  };
+
+  // Инициализируем Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
 </body>
 </html>
