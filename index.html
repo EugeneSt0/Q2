@@ -408,8 +408,10 @@
   // Инициализируем Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+</script>
 
-  <script>
+<!-- Код работы с Firestore -->
+<script>
   function toggleMeeting(meetingId) {
     const meetingRef = db.collection("meetings").doc(meetingId);
 
@@ -438,6 +440,3 @@
     loadMeetings();
   });
 </script>
-
-</body>
-</html>
