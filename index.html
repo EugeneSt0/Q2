@@ -330,7 +330,10 @@
 
         grouped[date].forEach(meeting => {
           const li = document.createElement("li");
-          li.textContent = formatter(meeting, selectedTZ);
+          li.innerHTML = `
+        <input type="checkbox" id="meeting-${meeting.id}" onchange="toggleMeeting('${meeting.id}')">
+        <label for="meeting-${meeting.id}">${formatter(meeting, selectedTZ)}</label>
+      `;
 
           // Раскраска li по цвету команды
           li.style.backgroundColor = getTeamColor(meeting.team);
@@ -405,6 +408,35 @@
   // Инициализируем Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+
+  <script>
+  function toggleMeeting(meetingId) {
+    const meetingRef = db.collection("meetings").doc(meetingId);
+
+    meetingRef.get().then((doc) => {
+      if (doc.exists) {
+        meetingRef.update({ checked: !doc.data().checked });
+      } else {
+        meetingRef.set({ checked: true });
+      }
+    });
+  }
+
+  function loadMeetings() {
+    db.collection("meetings").onSnapshot((snapshot) => {
+      snapshot.forEach((doc) => {
+        const el = document.getElementById(`meeting-${doc.id}`);
+        if (el) {
+          el.checked = doc.data().checked;
+          el.parentElement.style.backgroundColor = doc.data().checked ? "#90EE90" : "";
+        }
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadMeetings();
+  });
 </script>
 
 </body>
