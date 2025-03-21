@@ -449,7 +449,11 @@ function toggleMeeting(meetingId) {
 }
 
 
-  document.addEventListener("DOMContentLoaded", () => {
-    loadMeetings();
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  // Допустим, хотим сразу показать общее расписание
+  showAllSchedule();
+  
+  // Подписка на Firestore
+  loadMeetings();
+});
 </script>
